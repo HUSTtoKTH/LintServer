@@ -1,3 +1,4 @@
+// Package client TODO
 package client
 
 import (
@@ -7,10 +8,9 @@ import (
 	"sync"
 	"time"
 
+	rmqrpc "github.com/HUSTtoKTH/lintserver/pkg/rabbitmq/rmq_rpc"
 	"github.com/google/uuid"
 	"github.com/streadway/amqp"
-
-	rmqrpc "github.com/evrone/go-clean-template/pkg/rabbitmq/rmq_rpc"
 )
 
 // ErrConnectionClosed -.

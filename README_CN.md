@@ -4,10 +4,10 @@
 
 golang服务的整洁架构模板
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/evrone/go-clean-template)](https://goreportcard.com/report/github.com/evrone/go-clean-template)
-[![License](https://img.shields.io/github/license/evrone/go-clean-template.svg)](https://github.com/evrone/go-clean-template/blob/master/LICENSE)
-[![Release](https://img.shields.io/github/v/release/evrone/go-clean-template.svg)](https://github.com/evrone/go-clean-template/releases/)
-[![codecov](https://codecov.io/gh/evrone/go-clean-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/evrone/go-clean-template)
+[![Go Report Card](https://goreportcard.com/badge/github.com/HUSTtoKTH/lintserver)](https://goreportcard.com/report/github.com/HUSTtoKTH/lintserver)
+[![License](https://img.shields.io/github/license/HUSTtoKTH/LintServer.svg)](https://github.com/HUSTtoKTH/lintserver/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/HUSTtoKTH/LintServer.svg)](https://github.com/HUSTtoKTH/lintserver/releases/)
+[![codecov](https://codecov.io/gh/HUSTtoKTH/LintServer/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/HUSTtoKTH/LintServer)
 
 ## 综述
 模板的目的为了展示：

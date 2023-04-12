@@ -1,3 +1,4 @@
+// Package server TODO
 package server
 
 import (
@@ -5,10 +6,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/HUSTtoKTH/lintserver/pkg/logger"
+	rmqrpc "github.com/HUSTtoKTH/lintserver/pkg/rabbitmq/rmq_rpc"
 	"github.com/streadway/amqp"
-
-	"github.com/evrone/go-clean-template/pkg/logger"
-	rmqrpc "github.com/evrone/go-clean-template/pkg/rabbitmq/rmq_rpc"
 )
 
 const (
@@ -33,7 +33,8 @@ type Server struct {
 }
 
 // New -.
-func New(url, serverExchange string, router map[string]CallHandler, l logger.Interface, opts ...Option) (*Server, error) {
+func New(url, serverExchange string, router map[string]CallHandler, l logger.Interface, opts ...Option) (*Server,
+	error) {
 	cfg := rmqrpc.Config{
 		URL:      url,
 		WaitTime: _defaultWaitTime,

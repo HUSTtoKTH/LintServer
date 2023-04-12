@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/HUSTtoKTH/lintserver/internal/entity"
+	"github.com/HUSTtoKTH/lintserver/internal/usecase"
+	"github.com/HUSTtoKTH/lintserver/pkg/rabbitmq/rmq_rpc/server"
 	"github.com/streadway/amqp"
-
-	"github.com/evrone/go-clean-template/internal/entity"
-	"github.com/evrone/go-clean-template/internal/usecase"
-	"github.com/evrone/go-clean-template/pkg/rabbitmq/rmq_rpc/server"
 )
 
 type translationRoutes struct {

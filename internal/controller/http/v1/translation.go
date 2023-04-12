@@ -3,11 +3,10 @@ package v1
 import (
 	"net/http"
 
+	"github.com/HUSTtoKTH/lintserver/internal/entity"
+	"github.com/HUSTtoKTH/lintserver/internal/usecase"
+	"github.com/HUSTtoKTH/lintserver/pkg/logger"
 	"github.com/gin-gonic/gin"
-
-	"github.com/evrone/go-clean-template/internal/entity"
-	"github.com/evrone/go-clean-template/internal/usecase"
-	"github.com/evrone/go-clean-template/pkg/logger"
 )
 
 type translationRoutes struct {
@@ -29,6 +28,7 @@ type historyResponse struct {
 	History []entity.Translation `json:"history"`
 }
 
+// history TODO
 // @Summary     Show history
 // @Description Show all translation history
 // @ID          history
@@ -56,6 +56,7 @@ type doTranslateRequest struct {
 	Original    string `json:"original"     binding:"required"  example:"текст для перевода"`
 }
 
+// doTranslate TODO
 // @Summary     Translate
 // @Description Translate a text
 // @ID          do-translate

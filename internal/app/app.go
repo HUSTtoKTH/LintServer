@@ -7,18 +7,17 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/HUSTtoKTH/lintserver/config"
+	amqprpc "github.com/HUSTtoKTH/lintserver/internal/controller/amqp_rpc"
+	v1 "github.com/HUSTtoKTH/lintserver/internal/controller/http/v1"
+	"github.com/HUSTtoKTH/lintserver/internal/usecase"
+	"github.com/HUSTtoKTH/lintserver/internal/usecase/repo"
+	"github.com/HUSTtoKTH/lintserver/internal/usecase/webapi"
+	"github.com/HUSTtoKTH/lintserver/pkg/httpserver"
+	"github.com/HUSTtoKTH/lintserver/pkg/logger"
+	"github.com/HUSTtoKTH/lintserver/pkg/postgres"
+	"github.com/HUSTtoKTH/lintserver/pkg/rabbitmq/rmq_rpc/server"
 	"github.com/gin-gonic/gin"
-
-	"github.com/evrone/go-clean-template/config"
-	amqprpc "github.com/evrone/go-clean-template/internal/controller/amqp_rpc"
-	v1 "github.com/evrone/go-clean-template/internal/controller/http/v1"
-	"github.com/evrone/go-clean-template/internal/usecase"
-	"github.com/evrone/go-clean-template/internal/usecase/repo"
-	"github.com/evrone/go-clean-template/internal/usecase/webapi"
-	"github.com/evrone/go-clean-template/pkg/httpserver"
-	"github.com/evrone/go-clean-template/pkg/logger"
-	"github.com/evrone/go-clean-template/pkg/postgres"
-	"github.com/evrone/go-clean-template/pkg/rabbitmq/rmq_rpc/server"
 )
 
 // Run creates objects via constructors.
