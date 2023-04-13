@@ -135,7 +135,7 @@ const docTemplate = `{
             "required": [
                 "organization_id",
                 "project_id",
-                "rule_yml"
+                "rule"
             ],
             "properties": {
                 "organization_id": {
@@ -146,7 +146,7 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
-                "rule_yml": {
+                "rule": {
                     "type": "string",
                     "example": "json string"
                 }

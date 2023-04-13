@@ -26,13 +26,13 @@ definitions:
       project_id:
         example: 1
         type: integer
-      rule_yml:
+      rule:
         example: json string
         type: string
     required:
     - organization_id
     - project_id
-    - rule_yml
+    - rule
     type: object
 host: localhost:8080
 info:

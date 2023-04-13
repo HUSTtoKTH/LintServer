@@ -30,7 +30,7 @@ func newLintRoutes(handler *gin.RouterGroup, t usecase.Lint, l logger.Interface)
 type uploadRequest struct {
 	ProjectId      int64  `json:"project_id"   binding:"required"  example:"1"`
 	OrganizationId int64  `json:"organization_id"   binding:"required"  example:"1"`
-	RuleYml        string `json:"rule_yml"   binding:"required"  example:"json string"`
+	Rule           string `json:"rule"   binding:"required"  example:"json string"`
 }
 
 // upload TODO
@@ -54,7 +54,7 @@ func (r *lintRoutes) upload(c *gin.Context) {
 	err := r.t.Upload(c.Request.Context(), entity.Lint{
 		ProjectId:      request.ProjectId,
 		OrganizationId: request.OrganizationId,
-		Rule:           request.RuleYml,
+		Rule:           request.Rule,
 	}, c.GetHeader("Token"))
 	if err != nil {
 		r.l.Error(err, "http - v1 - upload")

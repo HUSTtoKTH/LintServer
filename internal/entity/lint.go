@@ -8,8 +8,3 @@ type Lint struct {
 	OrganizationId int64  `json:"organization_id" example:"1"`
 	Rule           string `json:"rule"        example:"json string"`
 }
-
-// id serial PRIMARY KEY,
-// project bigint,
-// organization bigint,
-// rule text
