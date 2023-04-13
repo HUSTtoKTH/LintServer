@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Using a translation service as an example",
-        "title": "Go Clean Template API",
+        "description": "Used for upload and get linting rules",
+        "title": "Lint Server API",
         "contact": {},
         "version": "1.0"
     },

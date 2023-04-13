@@ -13,6 +13,8 @@ $ make run
 
 ## Run Tests
 
+API DOC http://localhost:8080/swagger/index.html
+
 Admin user create new rule for project1
 
 ```sh

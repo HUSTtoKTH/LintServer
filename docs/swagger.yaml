@@ -37,8 +37,8 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: Using a translation service as an example
-  title: Go Clean Template API
+  description: Used for upload and get linting rules
+  title: Lint Server API
   version: "1.0"
 paths:
   /lint/rule/{project_id}:

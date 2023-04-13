@@ -17,8 +17,8 @@ import (
 
 // NewRouter -.
 // Swagger spec:
-// @title       Go Clean Template API
-// @description Using a translation service as an example
+// @title       Lint Server API
+// @description Used for upload and get linting rules
 // @version     1.0
 // @host        localhost:8080
 // @BasePath    /v1

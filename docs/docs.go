@@ -161,8 +161,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/v1",
 	Schemes:          []string{},
-	Title:            "Go Clean Template API",
-	Description:      "Using a translation service as an example",
+	Title:            "Lint Server API",
+	Description:      "Used for upload and get linting rules",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }
