@@ -20,40 +20,38 @@ type test struct {
 	err  error
 }
 
-func translation(t *testing.T) (*usecase.TranslationUseCase, *MockTranslationRepo, *MockTranslationWebAPI) {
+func newLint(t *testing.T) (*usecase.LintUseCase, *MockLintRepo, *MockAccountWebAPI) {
 	t.Helper()
 
 	mockCtl := gomock.NewController(t)
 	defer mockCtl.Finish()
 
-	repo := NewMockTranslationRepo(mockCtl)
-	webAPI := NewMockTranslationWebAPI(mockCtl)
+	repo := NewMockLintRepo(mockCtl)
+	webAPI := NewMockAccountWebAPI(mockCtl)
 
-	translation := usecase.New(repo, webAPI)
+	uc := usecase.New(repo, webAPI)
 
-	return translation, repo, webAPI
+	return uc, repo, webAPI
 }
 
-func TestHistory(t *testing.T) {
+func TestUpload(t *testing.T) {
 	t.Parallel()
 
-	translation, repo, _ := translation(t)
+	uc, repo, webAPI := newLint(t)
 
 	tests := []test{
 		{
-			name: "empty result",
-			mock: func() {
-				repo.EXPECT().GetHistory(context.Background()).Return(nil, nil)
-			},
-			res: []entity.Translation(nil),
-			err: nil,
-		},
-		{
 			name: "result with error",
 			mock: func() {
-				repo.EXPECT().GetHistory(context.Background()).Return(nil, errInternalServErr)
+				webAPI.EXPECT().Verify(context.Background(), "token").Return(int64(1), nil)
+				webAPI.EXPECT().IsAdmin(context.Background(), int64(1), int64(1)).Return(true, nil)
+				repo.EXPECT().Upsert(context.Background(), entity.Lint{
+					ProjectId:      1,
+					OrganizationId: 1,
+					Rule:           "rule",
+				}).Return(errInternalServErr)
 			},
-			res: []entity.Translation(nil),
+			res: nil,
 			err: errInternalServErr,
 		},
 	}
@@ -66,44 +64,50 @@ func TestHistory(t *testing.T) {
 
 			tc.mock()
 
-			res, err := translation.History(context.Background())
+			err := uc.Upload(context.Background(), entity.Lint{
+				ProjectId:      1,
+				OrganizationId: 1,
+				Rule:           "rule",
+			}, "token")
 
-			require.Equal(t, res, tc.res)
 			require.ErrorIs(t, err, tc.err)
 		})
 	}
 }
 
-func TestTranslate(t *testing.T) {
+func TestGetRule(t *testing.T) {
 	t.Parallel()
 
-	translation, repo, webAPI := translation(t)
+	uc, repo, webAPI := newLint(t)
 
 	tests := []test{
 		{
-			name: "empty result",
+			name: "success result",
 			mock: func() {
-				webAPI.EXPECT().Translate(entity.Translation{}).Return(entity.Translation{}, nil)
-				repo.EXPECT().Store(context.Background(), entity.Translation{}).Return(nil)
+				webAPI.EXPECT().Verify(context.Background(), "token").Return(int64(1), nil)
+				webAPI.EXPECT().GetUserProjects(context.Background(), int64(1)).Return([]int64{1, 2}, nil)
+				repo.EXPECT().GetRule(context.Background(), int64(1)).Return(&entity.Lint{}, nil)
 			},
-			res: entity.Translation{},
+			res: &entity.Lint{},
 			err: nil,
 		},
 		{
 			name: "web API error",
 			mock: func() {
-				webAPI.EXPECT().Translate(entity.Translation{}).Return(entity.Translation{}, errInternalServErr)
+				webAPI.EXPECT().Verify(context.Background(), "token").Return(int64(1), nil)
+				webAPI.EXPECT().GetUserProjects(context.Background(), int64(1)).Return(nil, errInternalServErr)
 			},
-			res: entity.Translation{},
+			res: (*entity.Lint)(nil),
 			err: errInternalServErr,
 		},
 		{
 			name: "repo error",
 			mock: func() {
-				webAPI.EXPECT().Translate(entity.Translation{}).Return(entity.Translation{}, nil)
-				repo.EXPECT().Store(context.Background(), entity.Translation{}).Return(errInternalServErr)
+				webAPI.EXPECT().Verify(context.Background(), "token").Return(int64(1), nil)
+				webAPI.EXPECT().GetUserProjects(context.Background(), int64(1)).Return([]int64{1, 2}, nil)
+				repo.EXPECT().GetRule(context.Background(), int64(1)).Return(nil, errInternalServErr)
 			},
-			res: entity.Translation{},
+			res: (*entity.Lint)(nil),
 			err: errInternalServErr,
 		},
 	}
@@ -116,7 +120,7 @@ func TestTranslate(t *testing.T) {
 
 			tc.mock()
 
-			res, err := translation.Translate(context.Background(), entity.Translation{})
+			res, err := uc.GetRule(context.Background(), 1, "token")
 
 			require.EqualValues(t, res, tc.res)
 			require.ErrorIs(t, err, tc.err)

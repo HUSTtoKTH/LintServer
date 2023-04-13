@@ -22,13 +22,14 @@ import (
 // @version     1.0
 // @host        localhost:8080
 // @BasePath    /v1
-func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation) {
+func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Lint) {
 	// Options
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
 
 	// Swagger
-	swaggerHandler := ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, "DISABLE_SWAGGER_HTTP_HANDLER")
+	// swaggerHandler := ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, "DISABLE_SWAGGER_HTTP_HANDLER")
+	swaggerHandler := ginSwagger.WrapHandler(swaggerFiles.Handler)
 	handler.GET("/swagger/*any", swaggerHandler)
 
 	// K8s probe
@@ -40,6 +41,6 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation) {
 	// Routers
 	h := handler.Group("/v1")
 	{
-		newTranslationRoutes(h, t, l)
+		newLintRoutes(h, t, l)
 	}
 }

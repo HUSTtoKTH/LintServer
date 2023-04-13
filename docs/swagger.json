@@ -9,9 +9,9 @@
     "host": "localhost:8080",
     "basePath": "/v1",
     "paths": {
-        "/translation/do-translate": {
-            "post": {
-                "description": "Translate a text",
+        "/lint/rule/{project_id}": {
+            "get": {
+                "description": "get project's lint rule",
                 "consumes": [
                     "application/json"
                 ],
@@ -19,26 +19,24 @@
                     "application/json"
                 ],
                 "tags": [
-                    "translation"
+                    "lint"
                 ],
-                "summary": "Translate",
-                "operationId": "do-translate",
+                "summary": "get project's lint rule",
+                "operationId": "getRule",
                 "parameters": [
                     {
-                        "description": "Set up translation",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/v1.doTranslateRequest"
-                        }
+                        "type": "integer",
+                        "description": "Project ID",
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entity.Translation"
+                            "$ref": "#/definitions/entity.Lint"
                         }
                     },
                     "400": {
@@ -56,9 +54,9 @@
                 }
             }
         },
-        "/translation/history": {
-            "get": {
-                "description": "Show all translation history",
+        "/lint/upload": {
+            "post": {
+                "description": "create or update project's lint rule",
                 "consumes": [
                     "application/json"
                 ],
@@ -66,15 +64,26 @@
                     "application/json"
                 ],
                 "tags": [
-                    "translation"
+                    "lint"
                 ],
-                "summary": "Show history",
-                "operationId": "history",
+                "summary": "create or update project's lint rule",
+                "operationId": "upload",
+                "parameters": [
+                    {
+                        "description": "Upload Rule",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.uploadRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v1.historyResponse"
+                            "$ref": "#/definitions/v1.response"
                         }
                     },
                     "500": {
@@ -88,57 +97,20 @@
         }
     },
     "definitions": {
-        "entity.Translation": {
+        "entity.Lint": {
             "type": "object",
             "properties": {
-                "destination": {
-                    "type": "string",
-                    "example": "en"
+                "organization_id": {
+                    "type": "integer",
+                    "example": 1
                 },
-                "original": {
-                    "type": "string",
-                    "example": "текст для перевода"
+                "project_id": {
+                    "type": "integer",
+                    "example": 1
                 },
-                "source": {
+                "rule": {
                     "type": "string",
-                    "example": "auto"
-                },
-                "translation": {
-                    "type": "string",
-                    "example": "text for translation"
-                }
-            }
-        },
-        "v1.doTranslateRequest": {
-            "type": "object",
-            "required": [
-                "destination",
-                "original",
-                "source"
-            ],
-            "properties": {
-                "destination": {
-                    "type": "string",
-                    "example": "en"
-                },
-                "original": {
-                    "type": "string",
-                    "example": "текст для перевода"
-                },
-                "source": {
-                    "type": "string",
-                    "example": "auto"
-                }
-            }
-        },
-        "v1.historyResponse": {
-            "type": "object",
-            "properties": {
-                "history": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entity.Translation"
-                    }
+                    "example": "json string"
                 }
             }
         },
@@ -148,6 +120,28 @@
                 "error": {
                     "type": "string",
                     "example": "message"
+                }
+            }
+        },
+        "v1.uploadRequest": {
+            "type": "object",
+            "required": [
+                "organization_id",
+                "project_id",
+                "rule_yml"
+            ],
+            "properties": {
+                "organization_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "project_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "rule_yml": {
+                    "type": "string",
+                    "example": "json string"
                 }
             }
         }

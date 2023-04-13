@@ -1,48 +1,38 @@
 basePath: /v1
 definitions:
-  entity.Translation:
+  entity.Lint:
     properties:
-      destination:
-        example: en
+      organization_id:
+        example: 1
+        type: integer
+      project_id:
+        example: 1
+        type: integer
+      rule:
+        example: json string
         type: string
-      original:
-        example: текст для перевода
-        type: string
-      source:
-        example: auto
-        type: string
-      translation:
-        example: text for translation
-        type: string
-    type: object
-  v1.doTranslateRequest:
-    properties:
-      destination:
-        example: en
-        type: string
-      original:
-        example: текст для перевода
-        type: string
-      source:
-        example: auto
-        type: string
-    required:
-    - destination
-    - original
-    - source
-    type: object
-  v1.historyResponse:
-    properties:
-      history:
-        items:
-          $ref: '#/definitions/entity.Translation'
-        type: array
     type: object
   v1.response:
     properties:
       error:
         example: message
         type: string
+    type: object
+  v1.uploadRequest:
+    properties:
+      organization_id:
+        example: 1
+        type: integer
+      project_id:
+        example: 1
+        type: integer
+      rule_yml:
+        example: json string
+        type: string
+    required:
+    - organization_id
+    - project_id
+    - rule_yml
     type: object
 host: localhost:8080
 info:
@@ -51,26 +41,25 @@ info:
   title: Go Clean Template API
   version: "1.0"
 paths:
-  /translation/do-translate:
-    post:
+  /lint/rule/{project_id}:
+    get:
       consumes:
       - application/json
-      description: Translate a text
-      operationId: do-translate
+      description: get project's lint rule
+      operationId: getRule
       parameters:
-      - description: Set up translation
-        in: body
-        name: request
+      - description: Project ID
+        in: path
+        name: project_id
         required: true
-        schema:
-          $ref: '#/definitions/v1.doTranslateRequest'
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.Translation'
+            $ref: '#/definitions/entity.Lint'
         "400":
           description: Bad Request
           schema:
@@ -79,27 +68,34 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1.response'
-      summary: Translate
+      summary: get project's lint rule
       tags:
-      - translation
-  /translation/history:
-    get:
+      - lint
+  /lint/upload:
+    post:
       consumes:
       - application/json
-      description: Show all translation history
-      operationId: history
+      description: create or update project's lint rule
+      operationId: upload
+      parameters:
+      - description: Upload Rule
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.uploadRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.historyResponse'
+            $ref: '#/definitions/v1.response'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1.response'
-      summary: Show history
+      summary: create or update project's lint rule
       tags:
-      - translation
+      - lint
 swagger: "2.0"
